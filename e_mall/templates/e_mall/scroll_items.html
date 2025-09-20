@@ -1,0 +1,59 @@
+
+
+    <div class="image-gallery">
+        <div class="image-container-wrapper" >
+        {% for stuff in products %}
+        <div class="image-container animated fadeIn" >
+            <a href="{% url 'e_mall:products_id' stuff.slug %}">
+            <div class="image-wrapper">
+                <img src= "{{ stuff.image_url }}"/>
+            </div>        
+                <p>
+                    <span class="producttext"><b>{{ stuff.name }}</b></span>
+                <br> 
+                {% if stuff.description %}
+                
+                <span class="descriptiontext">{{ stuff.description|truncatechars:104 }}</span>
+                <br> 
+                {% endif %}
+                <span class="categorytext"><b>
+                    {% if stuff.price %} 
+                    {% if stuff.price != '0' %}
+                    {% if stuff.price != '0.0' %}
+                    ${{ stuff.price }}<br>
+                    {% endif %}
+                    {% endif %}
+                    {% endif %}
+                    <span class="categorytexty"> [{{ stuff.category }}] </span>
+                    {% if countrysignal %}
+                <span class="categorytexty"> {{ stuff.location }}</span>
+                {% endif %}
+                {% if homesignal %}
+                {% if stuff.location %}
+                <span class="categorytexty"> {{ stuff.location }}, {{ stuff.location.country }} </span>
+                {% endif %}
+                {% endif %}
+                </b></span>
+                    
+                </p>
+            </a>
+            {% if signal %}
+            <div class="all-or-nothing2">
+            <a href="{% url 'e_mall:user_catalog' stuff.seller %}">@{{ stuff.seller }}</a> 
+            </div>
+            <div id="all-or-nothing2222">
+            <a href="{% url 'e_mall:user_catalog' stuff.seller %}">@{{ stuff.seller }}</a> 
+            </div>
+            {% endif %}  
+        </div>
+        
+        <!--including ads in the hompage-->
+        {% include './top_ad.html' %}
+
+        {% endfor %}
+        </div>
+        
+        
+
+    </div>
+

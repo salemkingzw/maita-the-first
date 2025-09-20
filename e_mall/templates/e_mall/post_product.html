@@ -1,0 +1,91 @@
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mobilelogin.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/desktoplogin.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/image-upload-styles.css' %}" />
+    <title>maita</title>
+</head>
+<div class="formstuff">
+    
+<form id="upload-form" method="post" enctype="multipart/form-data">    
+    {% csrf_token %}
+    <span id="messages">
+        {% for error in form.name.errors %}
+        {% if 'This field is required' in error %}
+        name/title field can not be blank<br>
+        {% endif %}
+        {% endfor %}
+    </span>
+    Name/Title: {{ form.name }}<br><br>
+    <span id="messages">
+        {% for error in form.price.errors %}
+        {% if 'This field is required' in error %}
+        name/title field can not be blank<br>        
+        {% else %}
+        {{ error }}<br>
+        {% endif %}
+        {% endfor %}
+    </span>
+    Price: {{ form.price }}<br><br>
+    Category: {{ form.category }}<br><br>
+    <span id="messages">
+        {% for error in form.description.errors %}
+        {{ error }}<br>
+        {% endfor %}
+    </span>
+    Description, <span id="char-count">characters left: <span id="count">1000</span></span><br>
+    {{ form.description }}<br><br>
+    Country: {{ form.country }}<br>
+    Location: {{ form.location }}<br><br>
+    <span id="messages">
+    {% for error in form.phone_no.errors %}
+    {% if 'This field is required' in error %}
+    phone field can not be blank<br>
+    {% else %}
+    {{ error }}<br>
+    {% endif %}
+    {% endfor %}
+    </span>
+    Phone number (required): <br>{{ form.country_code }}{{ form.phone_no }}<br><br>
+    International shipping: {{ form.international }} <br><br>
+    {{ form.image1.errors }} {{ form.image2.errors }} {{ form.image3.errors }}    
+    {{ form.image1 }}
+    {{ form.image2 }}
+    {{ form.image3 }}
+    {{ form.image4 }}
+    {{ form.image5 }}
+    {{ form.image6 }}
+    {{ form.image7 }}
+    {{ form.image8 }}
+    {{ form.image9 }}
+    {{ form.image10 }}
+    <input type="file" style="display: none;" id="image-upload" name="images" accept="image/*" multiple>
+    <div id ="twin-buttons" style="display: flex;">
+    <button id="select-images-button" type="button">Select Images (up to 10)</button>
+    </div>
+    <div id="image-preview"></div>
+    <button id="uploadButton" type="submit">Post Product</button>
+</form>
+</div>
+<div class="formstuff">
+    <span id="intro3">&nbsp;</span>
+<a href="{% url 'e_mall:store' %}">Home</a>
+</div>
+
+<script>
+    const textarea = document.getElementById('id_description');
+    const charCountSpan = document.getElementById('count');
+    textarea.addEventListener('input', ()=>
+{
+    const charCount=textarea.value.length;
+    const charsLeft=1000-charCount;
+    charCountSpan.textContent=charsLeft;
+}
+    );
+</script>
+
+<script src = "{% static 'e_mall/js/disable_button.js' %}"></script>
+<script src="{% static 'e_mall/js/heic2any.js' %}"></script>
+<script src = "{% static 'e_mall/js/image_upload.js' %}"></script>
+<script src="{% static 'e_mall/js/country_location.js' %}"></script>

@@ -1,0 +1,65 @@
+{% load static %}
+<div class="locationsmobile">                        
+    <div >
+        {% if categories_signal %}
+        --<button class="nav-options-button" id="mobilesort"><b>sort by location ↑</b></button>--
+        {% else %}
+        {% if locationcategorysignal %}
+        {% for stuff in location %}
+        {% if stuff.id == sell_products.id %}
+        &nbsp;&nbsp;<b>{{ stuff.name }}</b> --<button class="nav-options-button" id="mobilesort"><b>sort by location ↑</b></button>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        {% if locationsignal %}
+        {% for stuff in location %}
+        {% if stuff.id == sell_products.id %}
+        &nbsp;&nbsp;<b>{{ stuff.name }}</b> --<button class="nav-options-button" id="mobilesort"><b>more locations ↑</b></button>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        {% if homesignal %}    
+        <button class="nav-options-button" id="mobilesort"><b>sort by location ↑</b></button>
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        {% if countrysignal %}    
+        <button class="nav-options-button" id="mobilesort"><b>sort by location ↑</b></button>
+        {% endif %}
+        <div class=" nav-options-menu location-menu-item " style="display: none;">
+        <div class="location-menu-item">
+        
+        <form method="get" action="e_mall:get_locations">
+        <select name="country" id="id_country">
+            <option value="">Select country</option>
+            {% for country in countries %}
+            <option value="{{ country.id }}" {% if country.id|stringformat:"s" == selected_country_id|stringformat:"s" %}selected{% endif %}>{{ country.name }}</option>
+            {% endfor %}
+        </select>
+    </form>
+        
+        {% include './locoloco.html' %}
+        <script src="{% static 'e_mall/js/locations_filter.js' %}"></script> 
+        
+        
+        </div>
+        </div>
+    </div>  
+    
+</div> 
+<div id="desktop-options">
+<a href="{% url 'e_mall:about_maita' %}">About maita</a>
+<a href="{% url 'e_mall:about_maita' %}">Contact</a>
+<a href="{% url 'e_mall:about_maita' %}">Advertise</a>
+</div>
+{% if subscriptionsignal or aboutsignal %}
+<div id="brmobile22">
+    
+    <a href="{% url 'e_mall:about_maita' %}">About maita</a>
+    <a href="{% url 'e_mall:about_maita' %}">Contact</a>
+    <a href="{% url 'e_mall:about_maita' %}">Advertise</a>
+   
+</div>
+{% endif %}
+

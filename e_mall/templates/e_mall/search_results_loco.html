@@ -1,0 +1,25 @@
+<style>
+    #id_location{
+    display: flex;
+       justify-content: center;
+       flex-wrap: wrap;
+       width: fit-content;
+    }
+</style>
+{% if location %}
+{% for stuff in location %} 
+{% if stuff.id == current_location.id %}
+<div id="id_location">
+<a href="{% url 'e_mall:search_results' stuff.name %}"><span class="lococo">{{ stuff.name }}</span></a>
+</div>
+{% else %}
+<div id="id_location">
+<a href="{% url 'e_mall:search_results' stuff.name %}">{{ stuff.name }}</a>
+</div>
+{% endif %}
+{% endfor %}
+{% else %}
+<div id="id_location">
+              
+</div>
+{% endif %}

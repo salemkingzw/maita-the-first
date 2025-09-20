@@ -1,0 +1,41 @@
+{% load static %}
+<div class="image-gallery">
+    {% for stuff in products %}
+    <div class="image-container animated fadeIn">
+        <a href="{% url 'e_mall:products_id' stuff.slug %}">
+        <div class="image-wrapper">
+            <img src= "{{ stuff.image1.url }}" />
+        </div>
+        
+            <p>
+                <span class="producttext"><b>{{ stuff.name }}</b></span>
+            <br> 
+            
+            {% if stuff.description  %}
+            
+            <span class="descriptiontext">{{ stuff.description|truncatechars:104 }}</span>
+            <br> 
+            {% endif %} 
+            
+            <span class="categorytext"><b>
+                {% if stuff.price %}
+                {% if stuff.price != '0' %}
+                {% if stuff.price != '0.0' %}                
+                ${{ stuff.price }}<br>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                <span class="categorytexty"> {{ stuff.category }} </span>
+            </b></span>
+                
+            </p>
+        </a>
+    </div>
+
+    
+     <!--including ads in locations page-->
+     {% include './top_ad.html' %}
+
+    {% endfor %}
+
+</div>

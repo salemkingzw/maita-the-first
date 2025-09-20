@@ -1,0 +1,84 @@
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mainstyle.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mobilemain.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/about-styles.css' %}" />
+    <title>maita | about-maita </title>
+    <meta name="description" content="{% block description %} 
+    ○ maita.com is an online marketplace built to help entrepreneurs market their products and services, while allowing a smooth experience for the customer. 
+    {% endblock %}"/>
+</head>
+
+<nav class="navbar" >    
+    
+    <div class="navimg">
+        <a href="{% url 'e_mall:store' %}">
+        <img src="{% static 'e_mall/images/logo.png' %}">
+        </a>
+    </div>
+        
+        {% include './navbar.html' %}
+    
+        <form class= "searcho" method="GET" action="{% url 'e_mall:search_results' %}" id="search-form" >            
+            <input class="searchbar" type="search" name="q" placeholder="search for items..." >
+            <button class="searchbar2"type = "submit" onclick="return checkInput()">Search</button>
+        </form>
+        <script src="{% static 'e_mall/js/mainscript.js' %}"></script>
+        
+            
+        
+        <div class="pagetextna">
+            
+            {% if user.is_authenticated %}
+            <span class="navprofimg">
+            <a href="{% url 'e_mall:user_catalog' user.username %}">
+                <img src="{% static 'e_mall/images/icon_profile.png' %}">
+            </a>
+            </span>
+            {% endif %}
+
+            <span class="postbutton">
+                <a href="{% url 'e_mall:post_product' %}">post</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'e_mall:logout' %}">logout</a>
+            {% else %}
+            <a href="{% url 'e_mall:login' %}">login</a>
+            {% endif %}  
+            </span>
+            
+        </div>
+</nav>
+
+<br><br><br><span id="brmobile"><br></span>
+<div class="aboutaboutpage">
+<div class="about-page">
+<h3>About maita</h3>
+<p>
+<b>○ maita.com</b> is an online marketplace built to help entrepreneurs market their products and services, while allowing a smooth experience for the customer.<br>
+<b>○</b> Click the post button to promote your product/service and create product catalogs. <br>
+<b>○</b> Find products in specific locations and categories and connect with sellers.
+</p>
+</div>
+<div class="about-page">
+<h3>Advertise on maita</h3>
+<p>
+<b>○</b> Get special adverts for your business that are always featured on the homepage.<br>
+<b>○</b> The adverts appear multiple times within the homepage and are displayed on every location and category page.<br>
+<b>○</b> Get in touch with us for these adverts.
+</p>
+</div>
+<div class="about-page">
+<h3>Contact Information</h3>
+<p>
+Email: <a href="mailto:maita@gmail.com" target="_blank">maita@gmail.com</a><br>
+Whatsapp: 
+<a href="https://api.whatsapp.com://send?phone=+263-775749445&text=advertising%20on%20maita" target="_blank">
+    +263 77 574 9445
+</a>
+</p>
+</div>
+</div>
+<div class="locations" >            
+    {% include './locations_bar.html' %}       
+</div>

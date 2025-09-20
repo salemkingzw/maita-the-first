@@ -1,0 +1,85 @@
+{% load static %}
+{% load i18n %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mobilelogin.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/desktoplogin.css' %}" />
+    <title>maita</title>
+</head>
+<body>
+<div class="formstuff">
+<img id="mylogo"src="{% static 'e_mall/images/logo.png' %}">
+<span id="intro">Welcome to maita.com, a platform designed to connect entrepreneurs with potential customers.</span>
+<span id="intro2">create product catalogs with ease, find products that you want, find products according to location and follow other sellers.</span>
+</div>
+{% if messages %}
+<div class="formstuff">
+{% for message in messages %}
+<span id="messages">{{ message }}</span>
+{% endfor %}
+</div>
+{% endif %}
+
+{% if form.username.errors %}
+    <div class="formstuff">
+    <span id="messages">
+{% for error in form.username.errors %}
+{% if 'This field is required' in error %}
+username cannot be blank
+{% endif %}
+{% endfor %}
+    </span>
+    </div>
+{% endif %}
+
+{% if form.password.errors %}
+<div class="formstuff">
+    <span id="messages">
+{% for error in form.password.errors %}
+{% if 'This field is required' in error %}
+password cannot be blank
+{% endif %}
+{% endfor %}
+</span>
+</div>
+{% endif %}
+
+{% if '__all__' in form.errors %}
+<div class="formstuff">
+    <span id="messages">
+{% for error in form.errors %}
+{% if '__all__' in error %}
+enter a correct username and password
+{% endif %}
+{% endfor %}
+</span>
+</div>
+{% endif %}
+<div class="formstuff">
+    <span id="introo">Enter details to login...</span>
+
+    <form method="POST" action="{% url 'e_mall:login' %}">
+    {% csrf_token %}
+    <p>username:</p>
+    {{ form.username }}<br>
+    <p>password:</p>
+    {{ form.password }}<br><br>
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
+    <button id="uploadButton" type="submit">Login</button>
+    </form>
+</div>
+<div class="formstuff">
+    <span id="intro3">Don't have an account yet?</span>
+
+    <a href="{% url 'e_mall:signup' %}">Signup</a>
+    <a href="{% url 'e_mall:store' %}">Home</a>
+</div>
+<p>
+    <a href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+</p>
+
+<div class="credits">maita.com 2024</div>
+
+    <script src = "{% static 'e_mall/js/disable_button.js' %}"></script>
+
+</body>

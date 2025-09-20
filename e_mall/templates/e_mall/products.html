@@ -1,0 +1,141 @@
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mainstyle.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/products.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mobileproducts.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mobilemain.css' %}" />
+    <title>{% block title %} {{ product_item.name }} | maita {% endblock %}</title>
+    <meta name="description" content="{% block description %} {{ product_item.description|linebreaksbr }} {% endblock %}"/>
+</head>
+<nav class="navbar">
+    <div class="navimg">
+        <a href="{% url 'e_mall:store' %}">
+        <img src="{% static 'e_mall/images/logo.png' %}">
+        </a>
+    </div>
+    
+    {% include './navbar.html' %}
+
+        <form class= "searcho" method="GET" action="{% url 'e_mall:search_results' %}" id="search-form" >            
+            <input class="searchbar" type="search" name="q" placeholder="search for items..." >
+            <button class="searchbar2"type = "submit" onclick="return checkInput()">Search</button>
+        </form>
+        <script src="{% static 'e_mall/js/mainscript.js' %}"></script>
+        
+            
+        
+        <div class="pagetextna">
+            
+            {% if user.is_authenticated %}
+            <span class="navprofimg">
+            <a href="{% url 'e_mall:user_catalog' user.username %}">
+                <img src="{% static 'e_mall/images/icon_profile.png' %}">
+            </a>
+            </span>
+            {% endif %}
+
+            <span class="postbutton">
+                <a href="{% url 'e_mall:post_product' %}">post</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'e_mall:logout' %}">logout</a>
+            {% else %}
+            <a href="{% url 'e_mall:login' %}">login</a>
+            {% endif %}  
+            </span>
+            
+        </div>
+</nav>
+
+<p class="sitesite2"><span id="homeintromobile">Welcome to maita {{ user.username }}, buy and sell quickly</span></p>
+
+<div class="pimage-gallery">
+    <div class="pimage-container animated fadeIn-product">
+        
+        <div class="pimage-wrapper">
+            <div class="slideshow">
+                <img class="animated fadeIn-product" src= "{{ product_item.image_url }}" />
+                {% if product_item.image2 %}
+                <img class="animated fadeIn-product" src= "{{ product_item.image2.url }}" />
+                {% endif %}
+                {% if product_item.image3 %}
+                <img class="animated fadeIn-product" src= "{{ product_item.image3.url }}" />
+                {% endif %}
+                {% if product_item.image4 %}
+                <img class="animated fadeIn-product" src= "{{ product_item.image4.url }}" />
+                {% endif %}
+                {% if product_item.image5 %}
+                <img class="animated fadeIn-product" src= "{{ product_item.image5.url }}" />
+                {% endif %}
+                {% if product_item.image6 %}
+                <img class="animated fadeIn-product" src= "{{ product_item.image6.url }}" />
+                {% endif %}
+                {% if product_item.image7 %}
+                <img class="animated fadeIn-product" src= "{{ product_item.image7.url }}" />
+                {% endif %}
+                {% if product_item.image8 %}
+                <img class="animated fadeIn-product" src= "{{ product_item.image8.url }}" />
+                {% endif %}
+                {% if product_item.image9 %}
+                <img class="animated fadeIn-product" src= "{{ product_item.image9.url }}" />
+                {% endif %}
+                {% if product_item.image10 %}
+                <img class="animated fadeIn-product" src= "{{ product_item.image10.url }}" />
+                {% endif %}
+                {% if product_item.image2 or product_item.image3 %}
+                <button class="prev"> < </button>
+                <button class="next"> > </button>
+                {% endif %}
+            </div>
+            <script src="{% static 'e_mall/js/product_slideshow.js' %}"></script>
+        </div>
+        
+            <p>
+                <span class="pproducttext"><b>{{ product_item.name }}</b></span>
+            <br> <br> 
+            
+            {% if product_item.description %}
+            
+            <span class="pdescriptiontext">{{ product_item.description|linebreaksbr }}</span>
+            <br> <br> 
+            {% endif %} 
+            
+            <span class="pcategorytext"><b>
+                {% if product_item.price %}
+                {% if product_item.price != '0' %}
+                {% if product_item.price != '0.0' %}                 
+                ${{ product_item.price }}<br><br>
+                {% endif %} 
+                {% endif %}
+                {% endif %}
+                <span class="pcategorytexty"> {{ product_item.category }} </span>
+            </b></span><br><br>
+            {% if subscribed_user %}
+            <span class="pdescriptiontext">Posted by: {{ product_item.seller }}</span>
+            <span id="sub-user-green-tick-3">            
+                <img src="{% static 'e_mall/images/subscribed_user.png' %}">            
+            </span>
+            <br>
+            {% else %}
+            <span class="pdescriptiontext">Posted by: {{ product_item.seller }}</span><br>
+            {% endif %}                        
+            <span class="pdescriptiontext"><a href="{% url 'e_mall:user_catalog' product_item.seller %}">view {{ product_item.seller }}'s catalog</a></span><br><br>    
+            {% if product_item.phone_no is not None %}
+            <span class="pdescriptiontext">Phone: <a href="tel:{{ product_item.phone_no }}"> {{ product_item.phone_no }}</a></span><br>
+                
+            <span class="pdescriptiontext">Whatsapp: <a href="https://api.whatsapp.com://send?phone={{ product_item.phone_no }}&text=Hi,%20found%20your%20products%20on%20maita" target="_blank"> {{ product_item.phone_no }}</a></span><br><br>
+                
+            {% else %}
+            <span class="pdescriptiontext">Phone: {{ product_item.phone_no }}</span><br>
+            {% endif %}
+            <span class="pdescriptiontext">Location: {{ product_item.location }}{% if product_item.location.country %}, {{ product_item.location.country }}{% endif %}</span>
+        {% if product_item.international %}
+        <br><br>ships internationally in...
+        {% endif %}    
+        </p>
+        
+    </div>
+
+</div>
+
+   

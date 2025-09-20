@@ -1,0 +1,48 @@
+{% load static %}
+<div class="image-gallery">
+    
+    {% if results %}
+    {% for result in results %}
+    <div class="simage-container animated fadeIn" >
+        <a href="{% url 'e_mall:products_id' result.slug %}">
+        <div class="simage-wrapper">
+            <img src= "{{ result.image1.url }}" />
+        </div>
+        
+            <p>
+                <span class="sproducttext"><b>{{ result.name }}</b></span>
+            <br> 
+            
+            {% if result.description  %}
+            
+            <span class="sdescriptiontext">{{ result.description|truncatewords:20 }}</span>
+            <br> 
+            {% endif %}  
+            
+            <span class="scategorytext"><b>
+                {% if result.price %}    
+                {% if result.price != '0' %}
+                {% if result.price != '0.0' %}            
+                ${{ result.price }}<br>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                <span class="scategorytexty"> {{ result.category }} </span><br>
+                {% if result.location is not None%}
+                <span class="scategorytexty"> {{ result.location }}, {{ result.location.country }} </span>
+                {% endif %}
+            </b></span>
+                
+            </p>
+        </a>
+        
+    </div>
+    {% endfor %}
+    {% else %}    
+    <div class="pagetext">
+        <p>        
+            <li>no products found :(</li>       
+        </p>
+    </div>  
+    {% endif %}
+</div>

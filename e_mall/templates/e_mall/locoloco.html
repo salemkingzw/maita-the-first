@@ -1,0 +1,82 @@
+<style>
+     #id_location{
+     display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: fit-content;
+     }
+</style>
+        {% if categories_signal %}
+        {% if location %}
+        {% for stuff in location %}
+        <div id="id_location">
+        <a href="{% url 'e_mall:set_location_category' stuff.name current_category.name %}"> {{ stuff.name }}</a>    
+        </div>
+        {% endfor %}
+        {% else %}
+        <div id="id_location">
+             
+        </div>
+        {% endif %}
+        {% else %}
+        {% if locationcategorysignal %}
+        <div id="id_location">
+        <a href="{% url 'e_mall:category_id' current_category.name %}">All {{ current_category.name }}</a>
+        </div>   
+        {% for stuff in location %}
+        {% if stuff.id == sell_products.id %}
+        <div id="id_location">
+        <a href="{% url 'e_mall:set_location_category' stuff.name current_category.name  %}"> <span class="lococo">{{ stuff.name }}</span></a>    
+        </div>
+        {% else %}
+        <div id="id_location">
+        <a href="{% url 'e_mall:set_location_category' stuff.name current_category.name  %}">{{ stuff.name }}</a>    
+        </div>
+        {% endif %}
+        {% endfor %} 
+        {% else %}
+        {% if locationsignal %} 
+        <div id="id_location">   
+        <a href="{% url 'e_mall:store' %}">All Locations</a>   
+        </div>
+        {% for stuff in location %}
+        {% if stuff.id == sell_products.id %}
+        <div id="id_location">
+        <a href="{% url 'e_mall:set_location' stuff.name %}"> <span class="lococo">{{ stuff.name }}</span></a>
+        </div>
+        {% else %}  
+        <div id="id_location"> 
+        <a href="{% url 'e_mall:set_location' stuff.name %}"> {{ stuff.name }}</a>
+        </div> 
+        {% endif %}  
+        {% endfor %} 
+        {% else %}
+        {% if countrysignal %}
+        
+        
+        {% for stuff in location %}            
+        <div id="id_location"> 
+        <a href="{% url 'e_mall:set_location' stuff.name %}"> {{ stuff.name }}</a>
+        </div> 
+        {% endfor %} 
+    
+        {% endif %}
+        {% if homesignal %}
+        {% if location %}
+        {% for stuff in location %}
+                <div id="id_location">
+                <a  href="{% url 'e_mall:set_location' stuff.name %}" > {{ stuff.name }}</a>    
+            </div>
+    
+        {% endfor %}
+        {% else %}
+        <div id="id_location">
+              
+        </div>
+        
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        

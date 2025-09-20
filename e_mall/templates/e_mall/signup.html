@@ -1,0 +1,83 @@
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mobilelogin.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/desktoplogin.css' %}" />
+    <title>maita</title>
+</head>
+<body>
+<div class="formstuff">
+    <img id="mylogo"src="{% static 'e_mall/images/logo.png' %}">
+    <span id="intro1">Welcome to maita.com, a platform designed to connect entrepreneurs with potential customers.</span>
+</div>
+{% if form.errors %}
+    {% if form.username.errors %}
+    <div class="formstuff">
+    <span id="messages">
+    {% for error in form.username.errors %}
+    {% if 'This field is required' in error %}
+    username field cannot be blank<br>
+    {% else %}
+    {{ error }}<br>
+    {% endif %}
+    {% endfor %}
+    </span>
+    </div>
+    {% endif %}
+    {% if form.email.errors %}
+    <div class="formstuff">
+    <span id="messages">
+    {% for error in form.email.errors %}
+    {% if 'This field is required' in error %}
+    email field cannot be blank<br>
+    {% else %}
+    {{ error }}<br>
+    {% endif %}
+    {% endfor %}
+    </span>
+    </div>
+    {% endif %}
+    {% if form.password1.errors or form.password2.errors %}
+    <div class="formstuff">
+    <span id="messages">
+    {% for error in form.password1.errors %}
+    {% if 'This field is required' in error %}
+    password field cannot be blank<br>
+    {% else %}
+    {{ error }}<br>
+    {% endif %}
+    {% endfor %}
+    {% for error in form.password2.errors %}
+    {% if 'This field is required' in error %}
+    verify password field cannot be blank<br>
+    {% else %}
+    {{ error }}<br>
+    {% endif %}
+    {% endfor %}
+    </span>
+    </div>
+    {% endif %}
+{% endif %}
+<div class="formstuff">
+    <span id="introo">Enter details to signup...</span>
+    <form method="POST" action="{% url 'e_mall:signup' %}">
+        {% csrf_token %}
+        <p>username:</p>
+        {{ form.username }}<br>
+        <p>email:</p>
+        {{ form.email }}<br>
+        <p>password:</p>
+        {{ form.password1 }}<br>
+        <p>verify password:</p>
+        {{ form.password2 }}<br><br>
+        <button id="uploadButton">Signup</button>
+    </form>
+</div>
+<div class="formstuff">
+    <span id="intro3">Already have an account?</span>
+<a href="{% url 'e_mall:login' %}">Login</a>
+<a href="{% url 'e_mall:store' %}">Home</a>
+</div>
+
+<script src = "{% static 'e_mall/js/disable_button.js' %}"></script>
+</body>

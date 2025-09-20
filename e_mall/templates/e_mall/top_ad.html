@@ -1,0 +1,17 @@
+{% load static %}
+
+{% if forloop.counter|divisibleby:8 %}
+    {% with top_ad|random as ad %}
+    <div class="image-container" id="ads">
+        <a href="{{ ad.link }}"target="_blank">
+        <img src="{{ ad.image.url }}">
+        <p>
+            <span class="producttext"><b>{{ ad.title }}</b></span>
+            <br>
+        <span id="adtag"><b>#ad</b></span>&nbsp;<span class="descriptiontext">{{ ad.description }}</span>
+        
+        </p>
+        </a>
+    </div>
+    {% endwith %}
+{% endif %}

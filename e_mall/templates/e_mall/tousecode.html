@@ -1,0 +1,129 @@
+<!--code I used before making changes-->
+<div class="ad-container-wrapper">
+    <div class="ad-container">
+        {% if following_products %}
+        Recent posts from people you follow <br>
+        <div class="ad-container-follows">
+    {% for stuff in following_products %}
+    <a href="{% url 'e_mall:products_id' stuff.slug %}">
+        @{{ stuff.seller }}<br>{{ stuff.name }}<br>{{ stuff.description|truncatechars:60 }}</a><br><br>
+    {% endfor %}<br></div>
+    {% else %}
+    Follow people to see their posts here
+    {% endif %}
+    {% if production %}
+    Featured Products
+    <div class="ad-container-follows">
+    {% for stuff in production %}
+    <a href="{% url 'e_mall:products_id' stuff.slug %}">
+    {{ stuff.name }}</a><br><br>
+    {% endfor %}<br></div>
+    </div>
+    {% endif %}
+</div>
+
+
+
+<!--navbar for categories-->
+<ul>
+    <li id="mobilehome"class="pagetext"><a href="{% url 'e_mall:store' %}">Home</a></li>
+
+    <div class="highlighterdrop" >
+        {% if current_category in electronic_category  %}
+        <button id="show-hide-btn" class="dropbtn2" >Electronics...</button>
+        {% else %}
+        <button id="show-hide-btn" class="dropbtn" >Electronics...</button>
+        {% endif %}    
+        <div id="hidden-div" class="dropdown-content">
+        {% for stuff in electronic_category %}
+        <a href="{% url 'e_mall:category_id' stuff.name %}">{{ stuff.name }}</a>
+        {% endfor %}
+        </div>            
+    </div>
+
+    {% for stuff in nav_categories %}
+    {% if stuff.id == current_category.id %}
+    <li class="highlighter"><a href="{% url 'e_mall:category_id' stuff.name %}">{{ stuff.name }}</a></li>
+    {% else %}
+    <li class="pagetext"><a href="{% url 'e_mall:category_id' stuff.name %}">{{ stuff.name }}</a></li>
+    {% endif %}
+    {% endfor %}
+    </ul>
+<!--products nav-->
+<ul>
+    <li id="mobilehome"class="pagetext"><a href="{% url 'e_mall:store' %}">Home</a></li>
+
+    <div class="highlighterdrop" >
+        {% if choso in electronic_category  %}
+        <button id="show-hide-btn" class="dropbtn2" >Electronics...</button>
+        {% else %}
+        <button id="show-hide-btn" class="dropbtn" >Electronics...</button>
+        {% endif %}    
+        <div id="hidden-div" class="dropdown-content">
+        {% for stuff in electronic_category %}
+        <a href="{% url 'e_mall:category_id' stuff.name %}">{{ stuff.name }}</a>
+        {% endfor %}
+        </div>            
+    </div>
+
+    {% for stuff in categories %}
+    {% if stuff.id == choso.id %}
+    <li class="highlighter"><a href="{% url 'e_mall:category_id' stuff.name %}">{{ stuff.name }}</a></li>
+    {% else %}
+    <li class="pagetext"><a href="{% url 'e_mall:category_id' stuff.name %}">{{ stuff.name }}</a></li>
+    {% endif %}
+    {% endfor %}
+    </ul>
+
+
+
+
+
+
+    <!--pagination before i utilized js-->
+    {% if signal %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if products.has_previous %}
+                <a href="?user=Following&page={{ products.previous_page_number }}">Previous</a>
+            {% endif %}
+            <span class="current">
+                Page {{ products.number }} of {{ products.paginator.num_pages }}.
+            </span>
+            {% if products.has_next %}
+                <a href="?user=Following&page={{ products.next_page_number }}">Next</a>
+            {% endif %}
+        </span>
+      </div>
+    {% else %}
+    <div class="pagination">
+        <span class="step-links">
+        {% if products.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ products.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+        Page {{ products.number }} of {{ products.paginator.num_pages }}.
+        </span>
+        {% if products.has_next %}
+        <a href="?page={{ products.next_page_number }}">next</a>
+        <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+        </span>
+    </div>
+    {% endif %}
+    
+
+
+<!--mobile+desktp nav-->
+    {% if subscriptionsignal %}
+        <li class="highlighter"><a href="{% url 'e_mall:subscription_page' %}">Subscription</a></li>
+        {% else %}
+        <li class="pagetext"><a href="{% url 'e_mall:subscription_page' %}">Subscription</a></li>
+        {% endif %}
+
+        {% if subscriptionsignal %}
+        <li class="highlighter"><a href="{% url 'e_mall:subscription_page' %}"><b>Subscription</b></a></li>
+        {% else %}
+        <li class="pagetext"><a href="{% url 'e_mall:subscription_page' %}"><b>Subscription</b></a></li>
+        {% endif %}

@@ -1,0 +1,246 @@
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mainstyle.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mobilemain.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/modal-styles.css' %}" />
+    <title>maita</title>
+</head>
+<nav class="navbar">
+    <div class="navimg">
+        <a href="{% url 'e_mall:store' %}">
+        <img src="{% static 'e_mall/images/logo.png' %}">
+        </a>
+    </div>
+    
+    {% include './navbar.html' %}
+
+        <form class= "searcho" method="GET" action="{% url 'e_mall:search_results' %}" id="search-form" >            
+            <input class="searchbar" type="search" name="q" placeholder="search for items..." >
+            <button class="searchbar2"type = "submit" onclick="return checkInput()">Search</button>
+        </form>
+        
+        
+            
+        
+        <div class="pagetextna">
+            
+            {% if user.is_authenticated %}
+            <span class="navprofimg">
+            <a href="{% url 'e_mall:user_catalog' user.username %}">
+                <img src="{% static 'e_mall/images/icon_profile.png' %}">
+            </a>
+            </span>
+            {% endif %}
+
+            <span class="postbutton">
+                <a href="{% url 'e_mall:post_product' %}">post</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'e_mall:logout' %}">logout</a>
+            {% else %}
+            <a href="{% url 'e_mall:login' %}">login</a>
+            {% endif %}  
+            </span>
+            
+        </div>
+</nav>
+{% if user.id == sell_products.id %}
+{% if subscribed_user %}
+<p class="sitesite9"><span id="homeintromobile777"><span ><b>your catalog, @{{ user.username }}</b>
+
+    <span class="sub-user-green-tick">
+        
+            <img src="{% static 'e_mall/images/subscribed_user.png' %}">
+        
+        </span>
+
+</span>
+{% else %} 
+<p class="sitesite9"><span id="homeintromobile777"><span ><b>your catalog, @{{ user.username }}</b></span>
+{% endif %}
+    {% if about.about is None %}
+    &nbsp;<span class="linko"><a href="{% url 'e_mall:edit_profile' %}"> add about</a></span></span> 
+    {% endif %}
+</p>
+{% else %}
+    {% if subscribed_user %}
+    <form method="POST" action="{% url 'e_mall:follow_user' sell_products %}">
+    {% csrf_token %}    
+    <p class="sitesite9" ><span id="homeintromobile90"><span ><b>catalog, @{{ sell_products }}</b></span>
+        <span id="sub-user-green-tick-2">
+            
+            <img src="{% static 'e_mall/images/subscribed_user.png' %}">
+        
+        </span>
+        <span class="linklo" > 
+            {% if sell_products.username in following %}
+            <button type = "submit">unfollow</button>
+            {% else %}
+            <button type = "submit">follow</button>
+            {% endif %}
+        </span></span>
+    </p>
+    </form>
+    {% else %}
+    <form method="POST" action="{% url 'e_mall:follow_user' sell_products %}">
+        {% csrf_token %}    
+        <p class="sitesite9" ><span id="homeintromobile90"><span ><b>catalog, @{{ sell_products }}</b></span>            
+            <span class="linklo" > 
+                {% if sell_products.username in following %}
+                <button type = "submit">unfollow</button>
+                {% else %}
+                <button type = "submit">follow</button>
+                {% endif %}
+            </span></span>
+        </p>
+        </form>
+    {% endif %}
+{% endif %}
+{% if user.id == sell_products.id %}
+    {% if about.about is not None %}
+    <div id="homeintromobile78">
+    <p class="pagetext9" id="aboutuserdesktop">
+        your about:<br>
+            {{ about.about|linebreaksbr }}
+            </p>
+            <form method="POST" action="{% url 'e_mall:delete_about' about.id %}">
+            {% csrf_token %}
+            <span class="linko"><a href="{% url 'e_mall:edit_profile' %}"> change about</a></span>    
+                <span class="linklo">
+                <button type = "submit">remove about</button>
+                </span>
+            </form></div>
+    
+    
+    {% endif %}
+    
+    
+    <button id="showFollowers">Followers</button>
+    <div id="followersModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeFollowers">&times;</span>
+            <h3>Followers</h3>
+    {% for followers in followers %}
+    <ul id="followersList">
+    <a href="{% url 'e_mall:user_catalog' followers %}">@{{ followers }}</a>
+    </ul>
+    {% endfor %}
+        </div>
+    </div>
+    
+
+    
+    <button id="showFollowing">Following</button><br>
+    <div id="followingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeFollowing">&times;</span>
+            <h3>Following</h3>
+    {% for following in following %}
+    <ul id="followingList">
+        <a href="{% url 'e_mall:user_catalog' following %}">@{{ following }}</a>
+    </ul>
+    {% endfor %}
+        </div>
+    </div>
+    
+
+{% else %}
+    {% if about.about is not None %}
+    <div id="homeintromobile78">
+    <p class="pagetext9" id="aboutuserdesktop">
+        {{ sell_products }}'s about:<br>
+            {{ about.about|linebreaksbr }}
+            </p>
+        </div>
+    {% endif %}
+{% endif %}
+
+{% if lamessage %}
+<span id="hokoyo">{{ lamessage }}</span><br>
+{% endif %}
+
+<div class="image-gallery animated fadeIn">
+    {% for stuff, absolute_url in url_d_posts %}
+    <div class="image-container ">
+        <a href="{% url 'e_mall:products_id' stuff.slug %}">
+        <div class="image-wrapper">
+            <img src= "{{ stuff.image1.url }}" />
+        </div>
+        
+            <p>
+                <span class="producttext"><b>{{ stuff.name }}</b></span>
+            <br> 
+            
+            {% if stuff.description %}
+            
+            <span class="descriptiontext">{{ stuff.description|truncatechars:104 }}</span>
+            <br> 
+            {% endif %} 
+            
+            <span class="categorytext"><b>
+                {% if stuff.price %}
+                {% if stuff.price != '0' %}
+                {% if stuff.price != '0.0' %}                
+                ${{ stuff.price }}<br>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                <span class="categorytexty"> {{ stuff.category }} </span>
+            </b></span>
+                
+            </p>
+        </a>
+            {% if request.user == stuff.seller %}
+                
+            
+            <div class="shasha">
+                
+                <button class="options-button"><b>...</b></button>
+                <div class="options-menu" style="display: none;">
+                    <button class="delete-button" data-post-id="{{ stuff.id }}"><b>DELETE</b></button>
+                    share...<br>                    
+                    <a href="https://api.whatsapp.com/send?text={{ absolute_url }}" target="_blank">WhatsApp</a>
+                    <a href="https://twitter.com/intent/tweet?text={{ stuff.name }}&url={{ absolute_url }}" target="_blank">X/Twitter</a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ absolute_url }}" target="_blank">Facebook</a>
+                </div>
+            </div>
+            
+            {% endif %}
+    </div>
+    
+    {% endfor %}
+
+    <!--sharing your catalog-->
+    {% if user.id == sell_products.id %}
+    <div class="share-catalog">                    
+        <button class="nav-options-button"><b>share catalog</b></button>
+        <div class="nav-options-menu" style="display: none;">                  
+            <a href="https://api.whatsapp.com/send?text={{ request.build_absolute_uri }}" target="_blank">WhatsApp</a>
+            <a href="https://twitter.com/intent/tweet?text=view%20my%20catalog&url={{ request.build_absolute_uri }}" target="_blank">X/Twitter</a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">Facebook</a>
+        </div>
+    </div>
+    {% endif %}
+    <!---->
+
+</div>
+
+{% if user.id == sell_products.id %}
+{% if subscribed_user %}
+<span id="hokoyo">
+you are subscribed and can post a maximum of {{ post_limito }} posts<br>
+you are left with {{ posts_left }} posts <br>
+{% if days_left %}
+your plan expires in {{ days_left }} days <br>
+{% endif %}
+</span><br><br>
+{% else %}
+<span id="hokoyo">
+</span><br><br>
+{% endif %}
+{% endif %}
+   
+   <script src="{% static 'e_mall/js/mainscript.js' %}"></script>
+   <script src ="{% static 'e_mall/js/post_options.js' %}"></script>
+   <script src ="{% static 'e_mall/js/modal_actions.js' %}"></script>
+   

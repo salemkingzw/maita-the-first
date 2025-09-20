@@ -1,0 +1,70 @@
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mainstyle.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mobilemain.css' %}" />
+    <title>{% block title %} {{ current_category }} | maita {% endblock %}</title>
+</head>
+<nav class="navbar">
+    <div class="navimg">
+        <a href="{% url 'e_mall:store' %}">
+        <img src="{% static 'e_mall/images/logo.png' %}">
+        </a>
+    </div>
+    
+    {% include './navbar.html' %}
+
+        <form class= "searcho" method="GET" action="{% url 'e_mall:search_results' %}" id="search-form" >            
+            <input class="searchbar" type="search" name="q" placeholder="search for items..." >
+            <button class="searchbar2"type = "submit" onclick="return checkInput()">Search</button>
+        </form>
+        <script src="{% static 'e_mall/js/mainscript.js' %}"></script>
+        
+            
+        
+        <div class="pagetextna">
+            
+            {% if user.is_authenticated %}
+            <span class="navprofimg">
+            <a href="{% url 'e_mall:user_catalog' user.username %}">
+                <img src="{% static 'e_mall/images/icon_profile.png' %}">
+            </a>
+            </span>
+            {% endif %}
+
+            <span class="postbutton">
+                <a href="{% url 'e_mall:post_product' %}">post</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'e_mall:logout' %}">logout</a>
+            {% else %}
+            <a href="{% url 'e_mall:login' %}">login</a>
+            {% endif %}  
+            </span>
+            
+        </div>
+</nav>
+
+<p class="sitesite2"><span id="homeintromobile">Welcome to maita {{ user.username }}, buy and sell quickly</span></p>
+
+{% if current_category in electronic_category %}
+<p class="pagetext" ><span id="homeintromobile77"><i><b>Electronics/{{ current_category }}</b></i></span></p>
+{% else %}
+<p class="pagetext"><span id="homeintromobile77"><i><b>{{ current_category }}</b></i></span></p>
+{% endif %}
+
+<div id="post-container">  
+    {% include './scroll_category_items.html' %}
+</div>
+
+<div id="loading" style="display: none;" ><div class="loader-circle"></div></div>
+<script src="{% static 'e_mall/js/page_nate.js' %}"></script>
+<br><br>
+
+    <div class="locations" >            
+        {% include './locations_bar.html' %} 
+    </div>
+    
+
+   
+   
+   

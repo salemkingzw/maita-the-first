@@ -1,0 +1,173 @@
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mainstyle.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mobilemain.css' %}" />
+    <title>maita</title>
+    <meta name="description" content="{% block description %} 
+    maita.com is a platform designed to connect entrepreneurs with potential customers.
+    create product catalogs, find products, filter location and follow other sellers.
+    {% endblock %}"/>
+    <meta name="keywords" content="e commerce, online market, buy and sell, entrepreneurs, best online store, Zimbabwe,
+    product catalogs, #1 online marketplace in the world">
+</head>
+<nav class="navbar" >    
+    
+    <div class="navimg">
+        <a href="{% url 'e_mall:store' %}">
+        <img src="{% static 'e_mall/images/logo.png' %}">
+        </a>
+    </div>
+        
+        {% include './navbar.html' %}
+    
+        <form class= "searcho" method="GET" action="{% url 'e_mall:search_results' %}" id="search-form" >            
+            <input class="searchbar" type="search" name="q" placeholder="search for items..." >
+            <button class="searchbar2"type = "submit" onclick="return checkInput()">Search</button>
+        </form>
+        <script src="{% static 'e_mall/js/mainscript.js' %}"></script>
+        
+            
+        
+        <div class="pagetextna">
+            
+            {% if user.is_authenticated %}
+            <span class="navprofimg">
+            <a href="{% url 'e_mall:user_catalog' user.username %}">
+                <img src="{% static 'e_mall/images/icon_profile.png' %}">
+            </a>
+            </span>
+            {% endif %}
+
+            <span class="postbutton">
+                <a href="{% url 'e_mall:post_product' %}">post</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'e_mall:logout' %}">logout</a>
+            {% else %}
+            <a href="{% url 'e_mall:login' %}">login</a>
+            {% endif %}  
+            </span>
+            
+        </div>
+</nav>
+{% if homesignal %}
+<p class="sitesite2"><span id="homeintromobile2">Welcome to maita.com{% if user.username %}&nbsp;{{ user.username }}{% endif %},&nbsp;buy and sell quickly  &#x1F4B8; &#x1F4B8; </span></p>
+{% endif %}
+{% if not countrysignal and not signal %}
+<h4><span id="homeintromobile2">International shipping</span></h4>
+{% endif %}
+{% if countrysignal %}
+<br><br>
+<h4><div class="jjk"><span id="homeintromobile2">Sort by country</span></div></h4>
+<div class="locations2 internationalcountry" id="homeintromobile77772">
+    {% for country in countries %}
+    <a href="{% url 'e_mall:country_id' country %}">{{ country }}</a>&nbsp;
+    {% endfor %}<br>
+    </div>
+
+<h4><span id="homeintromobile2">{{ countryname }}</span>
+
+<form method="GET" action="{% url 'e_mall:country_id' countryname %}">
+    <!--see products from people you follow-->
+    <div class="locations2 re33" id="homeintromobile777725">
+    {% if countrysignalsignal %}
+    <input class="thisone" type="submit" name="all" value="All">
+    <input class="thisone" id="thisones"type="submit" name="shipping" value="Shipping Products">
+    {% elif countrysignal %}
+    <input class="thisone" id="thisones"type="submit" name="all" value="All">
+    <input class="thisone" type="submit" name="shipping" value="Shipping Products">
+    {% endif %}</div>
+</form></h4>
+
+{% endif %}
+{% if international %}
+    <div class="int-products-bar">
+        <div class="scroll-arrows">
+            <button class="scroll-left">‹</button>
+            <button class="scroll-right">›</button>
+        </div>
+        <script src="{% static 'e_mall/js/scroll_arrows.js' %}"></script>
+{% for stuff in international %}
+    <div class="image-container superclass">
+        <a href="{% url 'e_mall:products_id' stuff.slug %}">
+            <div class="image-wrapper">
+                <img src= "{{ stuff.image1.url }}" />
+            </div>
+        <p>
+        <span class="producttext producttextsuperclass">{{ stuff.name }}</span><br>
+        <span class="descriptiontext descriptiontextsuperclass">{{ stuff.location }}, {{ stuff.location.country }}</span><br>
+        </p>
+        </a>
+    </div>
+{% endfor %}
+</div>
+<div class="pagination">
+    <span class="step-links">
+    {% if international.has_previous %}
+    <a href="?page=1">&laquo; first</a>
+    <a href="?page={{ international.previous_page_number }}">previous</a>
+    {% endif %}
+    <span class="current">
+    Page {{ international.number }} of {{ international.paginator.num_pages }}.
+    </span>
+    {% if international.has_next %}
+    <a href="?page={{ international.next_page_number }}">next</a>
+    <a href="?page={{ international.paginator.num_pages }}">last &raquo;</a>
+    {% endif %}
+    </span>
+</div>
+
+{% endif %}
+<!--see products from people you follow-->
+{% if signal %}
+{% if products %}
+<span class="pagetext9" id="homeintromobile7">Products from people you follow:</span><br><br>
+{% else %}
+<span class="pagetext9" id="homeintromobile7">Follow people to see their products here</span>
+{% endif %}
+{% endif %}
+<!--handling the pagination using js-->
+{% if not countrysignal and not signal %}
+<h4><span id="homeintromobile2">All products</span></h4>
+<div class="locations2 internationalcountry" id="homeintromobile77772" >    
+    {% for country in countries %}
+    <a href="{% url 'e_mall:country_id' country %}">{{ country }}</a>&nbsp;
+    {% endfor %}<br><br>
+    </div>
+{% endif %}
+<div id="post-container" >
+{% include './scroll_items.html' %}
+</div>
+
+<div id="loading" style="display: none;" ><div class="loader-circle"></div></div>
+<script src="{% static 'e_mall/js/page_nate.js' %}"></script>
+
+
+    <div class="locations" > 
+        <form method="GET" action="{% url 'e_mall:store' %}">
+            <!--see products from people you follow-->
+            <div class="all-or-nothing">
+            {% if signal %}
+            <input class="thisone" type="submit" name="all" value="All">
+            <input class="thisone" id="thisones"type="submit" name="user" value="Following">
+            {% elif homesignal %}
+            <input class="thisone" id="thisones"type="submit" name="all" value="All">
+            <input class="thisone" type="submit" name="user" value="Following">
+            {% endif %}</div>
+        </form>
+        {% include './locations_bar.html' %}  
+               
+    </div>
+{% if signal is None %}    
+<div class="credits">
+    
+   <p>
+    Powered by SalemKing<br>
+    follow on X: <a href="https://x.com/salemkingzw" target="_blank">@salemkingzw</a><br>
+    
+   </p>
+</div>
+{% else %}
+<br><br><br>
+{% endif %}
+   

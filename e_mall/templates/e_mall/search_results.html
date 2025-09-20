@@ -1,0 +1,103 @@
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mainstyle.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/search.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mobilesearch.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'e_mall/css/mobilemain.css' %}" />
+    <title>maita</title>
+</head>
+<nav class="navbar">
+    
+    <div class="navimg">
+        <a href="{% url 'e_mall:store' %}">
+        <img src="{% static 'e_mall/images/logo.png' %}">
+        </a>
+    </div>
+    
+    
+    {% include './navbar.html' %}
+
+        <form class= "searcho" method="GET" action="{% url 'e_mall:search_results' %}" id="search-form" >            
+            <input class="searchbar" type="search" name="q" placeholder="search for items...">
+            <button class="searchbar2"type = "submit" onclick="return checkInput()">Search</button>
+        </form>
+        <script src="{% static 'e_mall/js/mainscript.js' %}"></script>
+        
+            
+        
+        <div class="pagetextna">
+            
+            {% if user.is_authenticated %}
+            <span class="navprofimg">
+            <a href="{% url 'e_mall:user_catalog' user.username %}">
+                <img src="{% static 'e_mall/images/icon_profile.png' %}">
+            </a>
+            </span>
+            {% endif %}
+
+            <span class="postbutton">
+                <a href="{% url 'e_mall:post_product' %}">post</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'e_mall:logout' %}">logout</a>
+            {% else %}
+            <a href="{% url 'e_mall:login' %}">login</a>
+            {% endif %}  
+            </span>
+            
+        </div>
+</nav>
+<p class="sitesite2"><span id="homeintromobile">Welcome to maita {{ user.username }}, buy and sell quickly</span></p>
+<span class="sitesite3" id="homeintromobile770"><b>Search Results
+    {% if jj is not None%}
+    results for "{{ jj }}..."
+    {% else %}
+    results for "{{ og }}..."
+    {% endif %}
+</b></span><br><span id ="brdesktop"><br></span>
+<div class="pagetext" >
+
+</div>
+<div class="locations2" id="homeintromobile7777">
+{% if current_location is None %}
+<a href="{% url 'e_mall:search_results' 'all' %}"><span class="lococo">All results</span></a>
+{% else %}
+<a href="{% url 'e_mall:search_results' 'all' %}">All results</a>
+{% endif %}
+
+<form method="get" action="e_mall:get_locations">
+    <select name="country" id="id_country">
+        <option value="">Select country</option>
+        {% for country in countries %}
+        <option value="{{ country.id }}" {% if country.id|stringformat:"s" == selected_country_id|stringformat:"s" %}selected{% endif %}>{{ country.name }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+{% include './search_results_loco.html' %}
+</div>
+<script src="{% static 'e_mall/js/locations_filter.js' %}"></script> 
+<div class="image-gallery">
+    {% if user_results %}
+    <br>
+    <div class="user-results-bar">
+    Users:&nbsp;
+    {% for uuuser in user_results %}
+    <a href="{% url 'e_mall:user_catalog' uuuser %}">@{{ uuuser }}</a>&nbsp;
+    {% endfor %}
+    </div>
+    {% else %}
+    <br>
+    {% endif %}
+</div>  
+
+<div id="post-container">  
+    {% include './scroll_search_results.html' %}
+</div>
+
+<div id="loading" style="display: none;" ><div class="loader-circle"></div></div>
+<script src="{% static 'e_mall/js/page_nate.js' %}"></script>
+<br><br>
+
+    <!--Paginating the results-->
+    

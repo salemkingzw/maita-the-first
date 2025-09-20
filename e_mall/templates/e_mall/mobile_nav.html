@@ -1,0 +1,81 @@
+{% load static %}
+
+    {% if homesignal %}
+    <li class="highlighter"><a href="{% url 'e_mall:store' %}"><b>Home</b></a></li>
+    {% else %}
+    <li class="highlighter-inactive"><a href="{% url 'e_mall:store' %}"><b>Home</b></a></li>
+    {% endif %} 
+     
+    <div class="shasha">
+        {% if choso %}
+        {% for stuff in categories %}
+        {% if stuff.id == choso.id %}
+        <button class="mob-options-button"><b><span class="mob-options-button-active">&nbsp;{{ stuff.name }} ↓&nbsp;</span></b></button>
+        {% endif %}
+        {% endfor %}        
+        
+        {% if choso in electronic_category  %}
+        <button class="mob-options-button"><b><span class="mob-options-button-active">&nbsp;{{ choso.name }} ↓&nbsp;</span></b></button>
+        {% endif %}        
+        
+        {% else %}
+        {% if current_category %}
+        <button class="mob-options-button"><b><span class="mob-options-button-active">&nbsp;{{ current_category.name }} ↓&nbsp;</span></b></button>
+        {% else %}
+        {% if electronic_category %}
+        <button class="mob-options-button"><b>Categories ↓</b></button>
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        <div class="mob-options-menu" style="display: none;">
+            {% if locationcategorysignal %}
+            {% for stuff in electronic_category %}
+            <a href="{% url 'e_mall:set_location_category' sell_products stuff.name %}">{{ stuff.name }}</a>
+            {% endfor %}
+            {% for stuff in nav_categories %}
+            <a href="{% url 'e_mall:set_location_category' sell_products stuff.name %}">{{ stuff.name }}</a>
+            {% endfor %}
+            {% else %}
+            
+            {% if locationsignal %}            
+            {% for stuff in electronic_category %}
+            <a href="{% url 'e_mall:set_location_category' sell_products stuff.name %}">{{ stuff.name }}</a>
+            {% endfor %}
+            {% for stuff in nav_categories %}
+            <a href="{% url 'e_mall:set_location_category' sell_products stuff.name %}">{{ stuff.name }}</a>
+            {% endfor %}
+            {% else %}
+
+            {% for stuff in electronic_category %}
+            <a href="{% url 'e_mall:category_id' stuff.name %}">{{ stuff.name }}</a>
+            {% endfor %} 
+
+            {% if choso %}
+            {% for stuff in categories %}
+            {% if stuff.id == choso.id %}
+            <a href="{% url 'e_mall:category_id' stuff.name %}">{{ stuff.name }}</a></li>
+            {% else %}
+            <a href="{% url 'e_mall:category_id' stuff.name %}">{{ stuff.name }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% else %}            
+            {% if nav_categories %}
+            {% for stuff in nav_categories %}
+            {% if stuff.id == current_category.id %}
+            <a href="{% url 'e_mall:category_id' stuff.name %}">{{ stuff.name }}</a></li>
+            {% else %}
+            <a href="{% url 'e_mall:category_id' stuff.name %}">{{ stuff.name }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% else %}    
+            {% for stuff in categories %}
+            <a href="{% url 'e_mall:category_id' stuff.name %}">{{ stuff.name }}</a>
+            {% endfor %}   
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+        <!--sub nav was here-->
+    <script src="{% static 'e_mall/js/mob_menu_options.js' %}"></script>
